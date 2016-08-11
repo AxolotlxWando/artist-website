@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "author": "Wesley Wang",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "d3": "^4.1.1",
     "react": "^15.2.1",
