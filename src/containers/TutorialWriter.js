@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 
-import Timeline from 'components/Timeline'
-import MainViewport from 'components/MainViewport'
+import Timeline from 'containers/Timeline'
+import MainViewport from 'containers/MainViewport'
 
 class TutorialWriter extends Component {
   getStyleString () {
@@ -15,6 +15,7 @@ class TutorialWriter extends Component {
   render () {
     return (
       <div>
+        Tutorial writer
         <Timeline />
         <MainViewport />
       </div>
@@ -28,8 +29,7 @@ TutorialWriter.PropTypes = {
       key: PropTypes.number.isRequired,
       image: PropTypes.string.isRequired
     })
-  ),
-  isDragging: PropTypes.func.bool
+  ).isRequired
 }
 
 export default TutorialWriter

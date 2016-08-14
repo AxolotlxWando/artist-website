@@ -11,13 +11,19 @@
   "license": "MIT",
   "dependencies": {
     "d3": "^4.1.1",
+    "history": "^3.0.0",
+    "material-ui": "^0.15.4",
     "react": "^15.2.1",
     "react-dnd": "^2.1.4",
     "react-dnd-html5-backend": "^2.1.2",
     "react-dom": "^15.2.1",
     "react-faux-dom": "^2.7.1",
     "react-redux": "^4.4.5",
-    "redux": "^3.5.2"
+    "react-router": "^2.6.1",
+    "react-router-redux": "^4.0.5",
+    "react-tap-event-plugin": "^1.0.0",
+    "redux": "^3.5.2",
+    "redux-router": "^2.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",
@@ -29,6 +35,9 @@
     "css-loader": "^0.23.1",
     "html-webpack-plugin": "^2.22.0",
     "node-sass": "^3.8.0",
+    "redux-devtools": "^3.3.1",
+    "redux-devtools-dock-monitor": "^1.1.1",
+    "redux-devtools-log-monitor": "^1.0.11",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1"

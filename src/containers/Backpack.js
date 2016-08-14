@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import TaskSwimlane from 'components/TaskSwimlane'
 import CharacterSwimlane from 'components/CharacterSwimlane'
 
-class Timeline extends Component {
+class Backpack extends Component {
   getStyleString () {
     return (
       'height: 200px;' +
@@ -27,14 +27,8 @@ class Timeline extends Component {
   }
 }
 
-Timeline.PropTypes = {
-  taskSwimlanes: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired
-    })
-  ),
-  isDragging: PropTypes.func.bool
+Backpack.PropTypes = {
+  Collapsed: PropTypes.bool.isRequired
 }
 
-export default Timeline
+export default Backpack
