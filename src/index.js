@@ -1,3 +1,6 @@
+import injectTapEventPlugin from 'react-tap-event-plugin'
+injectTapEventPlugin()
+
 import React, { Component } from 'react'
 import App from 'components/App'
 import { render } from 'react-dom'
@@ -5,6 +8,7 @@ import { render } from 'react-dom'
 import { createStore, compose, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import DevTools from 'containers/DevTools'
+import backpack from 'reducers/backpack'
 import tutorialWriter from 'reducers/tutorialWriter'
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
@@ -15,7 +19,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import TutorialWriter from 'containers/TutorialWriter'
 import TutorialViewer from 'containers/TutorialViewer'
 
-require('sass/base/_all.scss')
+import 'sass/base/_all.scss'
 
 class Faq extends Component {
   render () {
@@ -26,12 +30,13 @@ class Faq extends Component {
 }
 
 const reducer = combineReducers({
+  backpack: backpack,
   tutorialWriter: tutorialWriter,
   routing: routerReducer
 })
 
 const store = compose(
-  DevTools.instrument()
+  window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore)(reducer)
 
 const history = syncHistoryWithStore(browserHistory, store)
@@ -49,7 +54,6 @@ render(
             </Route>
           </Router>
         </MuiThemeProvider>
-        <DevTools />
       </div>
     </Provider>
   </div>,

@@ -10,6 +10,7 @@
   "author": "Wesley Wang",
   "license": "MIT",
   "dependencies": {
+    "classnames": "^2.2.5",
     "d3": "^4.1.1",
     "history": "^3.0.0",
     "material-ui": "^0.15.4",

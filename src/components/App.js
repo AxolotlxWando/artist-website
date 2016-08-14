@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import Backpack from 'container/Backpack'
+import Backpack from 'containers/Backpack'
+
+import 'sass/components/app.scss'
 
 class App extends Component {
   render () {
     return (
-      <div>
-        <FloatingActionButton style=
+      <div className={'wrap'}>
         <Backpack />
         <Link to='/'>Home</Link>
         <Link to='/writer'>Writer</Link>

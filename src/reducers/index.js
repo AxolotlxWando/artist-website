@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import backpack from 'reducers/backpack'
 import tutorialWriter from 'reducers/tutorialWriter'
 
 function tutorialViewer (state = {}, action) {
