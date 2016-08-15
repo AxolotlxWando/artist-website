@@ -1,15 +1,36 @@
 .backpack {
   position: fixed;
-  top: 0;
+  top: -14rem;
   bottom: 0;
-  left: -14rem;
-  width: 14rem;
-  visibility: hidden;
+  height: 14rem;
+  visibility: visible;
   overflow-x: auto;
-  // font-family: "PT Sans", Helvetica, Arial, sans-serif;
-  // font-size: .875rem; /* 15px */
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  font-size: .875rem; /* 15px */
   color: rgba(255,255,255,.6);
   background-color: #202020;
-  -webkit-transition: all .3s ease-in-out;
-          transition: all .3s ease-in-out;
+  
+  -webkit-transition: -webkit-transform .3s ease-in-out;
+          transition: transform .3s ease-in-out;
+}
+
+.backpack.collapsed {
+  z-index: 10;
+  position: fixed;
+  top: -14rem;
+  bottom: 0;
+  height: 14rem;
+  visibility: visible;
+  overflow-x: auto;
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  font-size: .875rem; /* 15px */
+  color: rgba(255,255,255,.6);
+  background-color: #202020;
+  
+  -webkit-transition: -webkit-transform .3s ease-in-out;
+          transition: transform .3s ease-in-out;
+  
+  -webkit-transform: translateY(14rem);
+      -ms-transform: translateY(14rem);
+          transform: translateY(14rem);
 }
