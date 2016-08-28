@@ -1,8 +1,28 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import Toc from 'components/Toc'
 import Timeline from 'containers/Timeline'
 import MainViewport from 'containers/MainViewport'
+import Editor from 'containers/Editor'
+
+import { selectionAdd } from 'actions/tutorialWriterActions'
+
+function mapStateToProps (state) {
+  return {
+    text: state.text,
+    json: state.json,
+    html: state.html
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    selectionAdd: () => {
+      dispatch(selectionAdd())
+    }
+  }
+}
 
 class TutorialWriter extends Component {
   getStyleString () {
@@ -15,22 +35,19 @@ class TutorialWriter extends Component {
   }
   render () {
     return (
-      <div>
-        Tutorial writer
-        <Timeline />
-        <MainViewport />
+      <div className={'TutorialWriter'}>
+        <Toc />
+        <div className={'TutorialWriter-Content'}>
+          <Timeline />
+          <MainViewport html={this.props.html} />
+        </div>
+        <Editor />
       </div>
     )
   }
 }
 
-TutorialWriter.PropTypes = {
-  taskSwimlanes: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired
-    })
-  ).isRequired
+TutorialWriter.propTypes = {
 }
 
-export default connect()(TutorialWriter)
+export default connect(mapStateToProps, mapDispatchToProps)(TutorialWriter)

@@ -1,4 +1,4 @@
-import { EnumBackpackActions } from 'actions/backpack'
+import { EnumBackpackActions } from 'actions/backpackActions'
 
 export default function backpack (state = {collapsed: true}, action) {
   switch (action.type) {

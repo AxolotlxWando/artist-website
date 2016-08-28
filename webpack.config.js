@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var autoprefixer = require('autoprefixer')
 
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -15,10 +16,15 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ['style', 'css', 'sass']
+        loaders: ['style', 'css', 'postcss-loader', 'sass']
+      },
+      {
+        test: /\.md$/,
+        loader: 'file?name=[name].[ext]'
       }
     ]
   },
+  postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name]-bundle.js',

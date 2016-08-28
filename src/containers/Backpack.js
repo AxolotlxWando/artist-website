@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import classNames from 'classnames'
-import * as colors from 'material-ui/styles/colors'
 import 'sass/components/backpack.scss'
 
 function mapStateToProps (state) {
@@ -22,18 +21,18 @@ class Backpack extends Component {
   }
   render () {
     const classes = classNames({
-      backpack: true,
-      collapsed: this.props.collapsed
+      Backpack: true,
+      [this.props.collapsed ? 'collapsed' : 'expanded']: true
     })
     return (
       <div>
         <div className={classes}>
-            <p>
-              Content<br />
-              Content<br />
-              Content<br />
-              Content<br />
-            </p>
+          <p>
+            Content<br />
+            Content<br />
+            Content<br />
+            Content<br />
+          </p>
         </div>
       </div>
     )

@@ -1,0 +1,39 @@
+@media only screen and (min-width:680px) {
+    .SideBar {
+        position: fixed;
+        left: 1.5em;
+        top: 5rem;
+        bottom: 0;
+        width: 12em;
+        overflow: scroll;
+        padding: 3em 0
+    }
+}
+
+.SideBar .SideBar-group+.SideBar-group {
+    margin-top: 1.5em
+}
+
+.SideBar .SideBar-groupTitle {
+    border-bottom: 2px solid rgba(0, 116, 217, .1);
+    padding-bottom: .5em;
+    margin: 0 0 .5em
+}
+
+.SideBar .SideBar-item {
+    display: block;
+    color: #626466
+}
+
+.SideBar .SideBar-item.SideBar-item--selected {
+    color: #0074D9;
+    position: relative
+}
+
+.SideBar .SideBar-item.SideBar-item--selected:after {
+    content: '·';
+    position: absolute;
+    left: -.5em;
+    top: 0;
+    bottom: 0
+}

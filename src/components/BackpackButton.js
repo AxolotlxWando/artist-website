@@ -5,6 +5,8 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 // import ContentAdd from 'material-ui/svg-icons/content/add'
 import ActionWork from 'material-ui/svg-icons/action/work'
 
+import 'sass/components/backpack-button.scss'
+
 class BackpackButton extends Component {
   constructor (props) {
     super(props)
@@ -15,8 +17,8 @@ class BackpackButton extends Component {
   }
   render () {
     return (
-      <div>
-        <FloatingActionButton style={{position: 'fixed', right: 20, bottom: 20}} onClick={(this.onClick)}>
+      <div className={'BackpackButton'}>
+        <FloatingActionButton style={{position: 'fixed', right: 20, bottom: 20}} onClick={() => (this.onClick())}>
           <ActionWork />
         </FloatingActionButton>
       </div>

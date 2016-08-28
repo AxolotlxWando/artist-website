@@ -23,19 +23,12 @@ function catalogue (state = {}, action) {
   }
 }
 
-function bagpack (state = {}, action) {
-  switch (action.type) {
-    default:
-      return state
-  }
-}
-
 const rootReducer = combineReducers({
+  backpack,
   tutorialWriter,
   tutorialViewer,
   userPage,
-  catalogue,
-  bagpack
+  catalogue
 })
 
 export default rootReducer

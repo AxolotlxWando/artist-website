@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react'
 import TaskSwimlane from 'components/TaskSwimlane'
 import CharacterSwimlane from 'components/CharacterSwimlane'
 
+import 'sass/components/timeline.scss'
+
 class Timeline extends Component {
   getStyleString () {
     return (
@@ -14,7 +16,7 @@ class Timeline extends Component {
   }
   render () {
     return (
-      <div>
+      <div className={'Timeline'}>
         <TaskSwimlane />
         <CharacterSwimlane />
         <ul>

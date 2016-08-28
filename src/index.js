@@ -1,21 +1,29 @@
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
+// React
 import React, { Component } from 'react'
 import App from 'containers/App'
 import { render } from 'react-dom'
 
-import { createStore, compose, combineReducers } from 'redux'
+// Redux
+import { createStore, compose, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-import DevTools from 'containers/DevTools'
+
+// Redux middlewares, reducers
+import thunk from 'redux-thunk'
+// import DevTools from 'containers/DevTools'
 import backpack from 'reducers/backpack'
 import tutorialWriter from 'reducers/tutorialWriter'
 
+// Redux Router
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
+// Material UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
+// App
 import TutorialWriter from 'containers/TutorialWriter'
 import TutorialViewer from 'containers/TutorialViewer'
 
@@ -36,26 +44,23 @@ const reducer = combineReducers({
 })
 
 const store = compose(
+  applyMiddleware(thunk),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore)(reducer)
 
 const history = syncHistoryWithStore(browserHistory, store)
 
 render(
-  <div>
-    <Provider store={store}>
-      <div>
-        <MuiThemeProvider>
-          <Router history={history}>
-            <Route path='/' component={App}>
-              <IndexRoute component={TutorialWriter} />
-              <Route path='faq' component={Faq} />
-              <Route path='viewer' component={TutorialViewer} />
-            </Route>
-          </Router>
-        </MuiThemeProvider>
-      </div>
-    </Provider>
-  </div>,
+  <Provider store={store}>
+    <MuiThemeProvider>
+      <Router history={history}>
+        <Route path='/' component={App}>
+          <IndexRoute component={TutorialWriter} />
+          <Route path='faq' component={Faq} />
+          <Route path='viewer' component={TutorialViewer} />
+        </Route>
+      </Router>
+    </MuiThemeProvider>
+  </Provider>,
   document.getElementById('root')
 )
