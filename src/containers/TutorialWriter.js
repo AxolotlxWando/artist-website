@@ -8,11 +8,13 @@ import Editor from 'containers/Editor'
 
 import { selectionAdd } from 'actions/tutorialWriterActions'
 
+import 'sass/components/tutorial-writer.scss'
+
 function mapStateToProps (state) {
   return {
-    text: state.text,
-    json: state.json,
-    html: state.html
+    text: state.tutorialWriter.text,
+    json: state.tutorialWriter.json,
+    html: state.tutorialWriter.html
   }
 }
 
@@ -25,14 +27,6 @@ function mapDispatchToProps (dispatch) {
 }
 
 class TutorialWriter extends Component {
-  getStyleString () {
-    return (
-      'height: 200px;' +
-      'width: 200px;' +
-      'border: 2px solid #000;' +
-      'overflow-x: scroll;'
-    )
-  }
   render () {
     return (
       <div className={'TutorialWriter'}>

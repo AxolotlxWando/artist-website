@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import { Link } from 'react-router'
 
 import { connect } from 'react-redux'
 
@@ -45,10 +44,6 @@ class App extends Component {
         <BackpackButton toggleBackpack={this.props.backpack_toggleBackpack} />
         <div className={appContentClasses}>
           <Backpack />
-          <Link to='/'>Home</Link>
-          <Link to='/writer'>Writer</Link>
-          <Link to='/viewer'>Viewer</Link>
-          <Link to='/faq'>FAQ</Link>
           {this.props.children}
         </div>
       </div>

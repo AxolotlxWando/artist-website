@@ -1,5 +1,14 @@
-@media only screen and (min-width:680px) {
-    .MainViewport {
-        margin-left: 15rem;
-    }
+.MainViewport {
+    flex: 1 1 auto;
+    overflow: scroll;
+    border: 3px solid deeppink;
+    // border: 3px solid blue;
+}
+
+.markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
 }

@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import Act from 'components/Act'
 
+import 'sass/components/character-swimlane.scss'
+
 class CharacterSwimlane extends Component {
   render () {
     return (
       <div>
-        <div>
+        <div className={'CharacterSwimlane'}>
           CharacterSwimlane Header
         </div>
         <Act key={'laughing out loud'} />

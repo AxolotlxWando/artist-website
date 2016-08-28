@@ -1,0 +1,10 @@
+@media only screen and (min-width:680px) {
+    .Editor {
+        flex: 0 1 auto;
+      
+        min-width: 15rem;
+        overflow: scroll;
+      
+        border: 3px solid brown;
+    }
+}

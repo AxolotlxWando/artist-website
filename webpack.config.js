@@ -19,6 +19,9 @@ module.exports = {
         loaders: ['style', 'css', 'postcss-loader', 'sass']
       },
       {
+        test: /\.css$/, loader: 'style-loader!css-loader'
+      },
+      {
         test: /\.md$/,
         loader: 'file?name=[name].[ext]'
       }

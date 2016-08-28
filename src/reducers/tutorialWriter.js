@@ -13,7 +13,7 @@ export default function tutorialWriter (state = {file: '', text: '', json: '', h
       return Object.assign({}, state, {
         text: action.text,
         json: markdown.parse(action.text),
-        html: markdown.toHTML(action.text),
+        html: markdown.toHTML(action.text, 'Gruber'),
         blah: ':-D'
       })
     default:

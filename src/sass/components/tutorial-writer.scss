@@ -1,0 +1,25 @@
+@media only screen and (min-width:680px) {
+    .TutorialWriter {
+      flex: 1 1 auto;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      border: 3px solid green;
+
+      overflow: hidden;
+    }
+    .TutorialWriter-Content {
+        flex: 1 1 auto;
+
+        min-width: 48em;
+        overflow: hidden;
+        
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        border: 3px solid darkyellow;
+    }
+}

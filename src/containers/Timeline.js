@@ -1,35 +1,39 @@
 import React, { Component, PropTypes } from 'react'
 
+import { connect } from 'react-redux'
+
+import Paragraph from 'components/Paragraph'
 import TaskSwimlane from 'components/TaskSwimlane'
 import CharacterSwimlane from 'components/CharacterSwimlane'
 
 import 'sass/components/timeline.scss'
 
-class Timeline extends Component {
-  getStyleString () {
-    return (
-      'height: 200px;' +
-      'width: 200px;' +
-      'border: 2px solid #000;' +
-      'overflow-x: scroll;'
-    )
+function mapStateToProps (state) {
+  return {
+    text: state.tutorialWriter.text,
+    json: state.tutorialWriter.json,
+    html: state.tutorialWriter.html
   }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {}
+}
+
+class Timeline extends Component {
   render () {
     return (
       <div className={'Timeline'}>
+        <Paragraph />
         <TaskSwimlane />
         <CharacterSwimlane />
-        <ul>
-          <li>blah 1</li>
-          <li>blah 2</li>
-          <li>blah blah blah blah</li>
-        </ul>
+        <div dangerouslySetInnerHTML={{__html: this.props.json}} />
       </div>
     )
   }
 }
-
-Timeline.PropTypes = {
+/*
+Timeline.propTypes = {
   taskSwimlanes: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.number.isRequired,
@@ -37,6 +41,6 @@ Timeline.PropTypes = {
     })
   ),
   isDragging: PropTypes.func.bool
-}
+}*/
 
-export default Timeline
+export default connect(mapStateToProps)(Timeline)

@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import Task from 'components/Task'
 
+import 'sass/components/character-swimlane.scss'
+
 class TaskSwimlane extends Component {
   render () {
     return (
-      <div>
+      <div className={'TaskSwimlane'}>
         <div>
           TaskSwimlane Header
         </div>

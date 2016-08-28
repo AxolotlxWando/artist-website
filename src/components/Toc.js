@@ -4,7 +4,7 @@ import 'sass/components/toc.scss'
 class Toc extends Component {
   render () {
     return (
-      <div className={'SideBar'}>
+      <div className={'Toc'}>
         TOC
         <div className='SideBar-content'>
           <div className='SideBar-group' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0'>
