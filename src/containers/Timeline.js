@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import Paragraph from 'components/Paragraph'
+import ParagraphButtonAdd from 'components/ParagraphButtonAdd'
 import TaskSwimlane from 'components/TaskSwimlane'
 import CharacterSwimlane from 'components/CharacterSwimlane'
 
@@ -11,7 +12,7 @@ import 'sass/components/timeline.scss'
 function mapStateToProps (state) {
   return {
     text: state.tutorialWriter.text,
-    json: state.tutorialWriter.json,
+    jsonMl: state.tutorialWriter.jsonMl,
     html: state.tutorialWriter.html
   }
 }
@@ -22,12 +23,15 @@ function mapDispatchToProps (dispatch) {
 
 class Timeline extends Component {
   render () {
+    const headings = JSON.stringify(this.props.jsonMl)
+
     return (
       <div className={'Timeline'}>
         <Paragraph />
+        <ParagraphButtonAdd />
         <TaskSwimlane />
         <CharacterSwimlane />
-        <div dangerouslySetInnerHTML={{__html: this.props.json}} />
+        <div style={{display: 'none'}} dangerouslySetInnerHTML={{__html: headings}} />
       </div>
     )
   }

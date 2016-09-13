@@ -1,6 +1,14 @@
+@import '_dev';
+
 .TaskSwimlane {
     flex: 0 1 auto;
     overflow: scroll;
-    border: 3px solid deeppink;
+    border: $border-size solid deeppink;
     min-height: 3rem;
+  
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    border: $border-size solid green;
 }

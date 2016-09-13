@@ -22,8 +22,11 @@ module.exports = {
         test: /\.css$/, loader: 'style-loader!css-loader'
       },
       {
-        test: /\.md$/,
+        test: /(\.md$)|(\.layout$)/,
         loader: 'file?name=[name].[ext]'
+      },
+      {
+        test: /\.(png|jpg|gif|jpeg)$/, loader: 'file?name=[name].[ext]' // url-loader?limit=8192
       }
     ]
   },

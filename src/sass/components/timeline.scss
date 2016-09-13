@@ -1,14 +1,14 @@
-@media only screen and (min-width:680px) {
-    .Timeline {
-      flex: 0 1 auto;
-      min-height: 12rem;
-      
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      align-items: stretch;
-      border: 3px solid lightgreen;
-      
-      overflow: scroll;
-    }
+@import '_dev';
+
+.Timeline {
+  flex: 0 1 auto;
+  min-height: 12rem;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  border: $border-size solid lightgreen;
+
+  overflow: scroll;
 }

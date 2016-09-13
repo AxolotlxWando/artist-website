@@ -1,6 +1,8 @@
+@import '_dev';
+
 .Paragraph {
     flex: 0 1 auto;
     overflow: scroll;
-    border: 3px solid deeppink;
+    border: $border-size solid deeppink;
     min-height: 3rem;
 }

@@ -1,16 +1,18 @@
-@media only screen and (min-width:680px) {
-    .Toc {
-        flex: 0 1 auto;
-        // position: fixed;
-        // left: 1.5em;
-        // top: 5rem;
-        // bottom: 0;
-        min-width: 15rem;
-        overflow: scroll;
-        // padding: 3em 0
-      
-        border: 3px solid orange;
-    }
+@import '_dev';
+@import  url('https://fonts.googleapis.com/css?family=Roboto');
+
+.Toc {
+    flex: 0 1 auto;
+    // position: fixed;
+    // left: 1.5em;
+    // top: 5rem;
+    // bottom: 0;
+    min-width: 15rem;
+    width: 15rem;
+    overflow: scroll;
+    // padding: 3em 0
+
+    border: $border-size solid orange;
 }
 
 .Toc .SideBar-group+.SideBar-group {

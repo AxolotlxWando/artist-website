@@ -5,7 +5,7 @@ import 'sass/components/paragraph.scss'
 class Paragraph extends Component {
   render () {
     return (
-      <div>
+      <div className={'Paragraph'}>
         Paragraph {this.props.id}
       </div>
     )

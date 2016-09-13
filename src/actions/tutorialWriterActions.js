@@ -1,5 +1,6 @@
 import fetch from 'utils/fetch'
 import 'REDUX_README.md'
+import 'REDUX_README.layout'
 
 export const FILE_NEW_INVOCATION = 'FILE_NEW_INVOCATION'
 export const FILE_NEW = 'FILE_NEW'
@@ -58,26 +59,26 @@ function fileOpenRequest (file) {
   }
 }
 
-function fileOpenSuccess (text) {
+function fileOpenSuccess (text, layout) {
   return {
     type: FILE_OPEN_SUCCESS,
-    text: text
+    text: text,
+    layout: layout
   }
 }
 
 export function fileOpenAsync (file) {
   return (dispatch) => {
     dispatch(fileOpenRequest(file))
-    return fetch('./REDUX_README.md')
-    .then(
-      (response) => {
-        response.text().then(
-          (text) => { dispatch(fileOpenSuccess(text)) }
-        )
-      },
-      (reason) => {
-        console.log('Opening file failed: ' + reason)
-      }
+    var req1 = fetch('./REDUX_README.md').then(
+      (response) => { return response.text() }
+    )
+    var req2 = fetch('./REDUX_README.layout').then(
+      (response) => { return response.json() }
+    )
+    Promise.all([req1, req2]).then(
+      (results) => { dispatch(fileOpenSuccess(results[0], results[1])) },
+      (reason) => { console.log('Loading tutorial module failed, reason: ' + reason) }
     )
   }
 }

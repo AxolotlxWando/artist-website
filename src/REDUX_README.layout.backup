@@ -1,0 +1,37 @@
+{
+  "paperHeight": 70.1875,  // 29.7 cm = 70.1875 rem
+  "paperWidth": 49.625,    // 21 cm   = 49.625 rem
+  "columns": [
+    {
+      "id": 0,
+
+      // inside columns, using column font size as unit, it no longer uses rem (16px)
+      "fontSize": 0.5625,   // 9px font = 0.5625 rem, all values from this point uses this
+      "y": 5.1875,          // 2.2 cm = 5.1875 em
+      "x": 3.6875,          // 2.2 cm / 2^0.5 = 3.6875 em
+      "width": 23,          // 5.5 cm = 23 em
+      "height": 106,        // 29.7 - 2.2 - 2.2 cm = 106 em
+      "heightByLine": 71    // This would actually have been 70.8889em, but since we could kind of exclude the 0.2 accend and fit 71 in....
+    },
+    {
+      "id": 1,
+
+      "fontSize": 0.5625,
+      "y": 5.1875,
+      "x": 3.6875 + 23,
+      "width": 23,
+      "height": 106,
+      "heightByLine": 71
+    },
+    {
+      "id": 2,
+
+      "fontSize": 0.5625,
+      "y": 5.1875,
+      "x": 3.6875 + 23 + 23,
+      "width": 23,
+      "height": 106,
+      "heightByLine": 71
+    }
+  ]
+}

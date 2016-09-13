@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Task from 'components/Task'
 
-import 'sass/components/character-swimlane.scss'
+import 'sass/components/task-swimlane.scss'
 
 class TaskSwimlane extends Component {
   render () {
@@ -13,6 +13,7 @@ class TaskSwimlane extends Component {
         <Task key={"start"} />
         <Task key={"end"} />
         <div style={{
+          display: 'none',
           width: '150px',
           height: '150px',
           border: '2px solid #000',

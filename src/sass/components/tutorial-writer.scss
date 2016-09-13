@@ -1,25 +1,27 @@
-@media only screen and (min-width:680px) {
-    .TutorialWriter {
-      flex: 1 1 auto;
+@import '_dev';
 
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: stretch;
-      border: 3px solid green;
+.TutorialWriter {
+  flex: 1 1 auto;
 
-      overflow: hidden;
-    }
-    .TutorialWriter-Content {
-        flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  border: $border-size solid green;
 
-        min-width: 48em;
-        overflow: hidden;
-        
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-items: stretch;
-        border: 3px solid darkyellow;
-    }
+  overflow: auto;
+}
+
+.TutorialWriter-Content {
+    flex: 1 1 auto;
+
+    min-width: 15rem;
+    width: 15rem;
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    border: $border-size solid darkyellow;
 }

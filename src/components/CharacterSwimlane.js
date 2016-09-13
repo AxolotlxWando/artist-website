@@ -9,9 +9,13 @@ class CharacterSwimlane extends Component {
       <div>
         <div className={'CharacterSwimlane'}>
           CharacterSwimlane Header
+          <Act key={'laughing out loud'} />
+          <Act key={'punch in the face'} />
         </div>
-        <Act key={'laughing out loud'} />
-        <Act key={'punch in the face'} />
+        <div style={{display: 'none'}}>
+          <Act key={'laughing out loud'} />
+          <Act key={'punch in the face'} />
+        </div>
       </div>
     )
   }

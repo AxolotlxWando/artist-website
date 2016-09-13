@@ -1,29 +1,93 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+
+import { markdown } from 'markdown'
+import JsonML from 'jsonml-tools/jsonml-utils'
+
 import 'sass/components/toc.scss'
 
 class Toc extends Component {
+  constructor (props) {
+    super(props)
+    this._selectionSelect = this._selectionSelect.bind(this)
+  }
+  _selectionSelect () {
+    this.props.selectionSelect()
+  }
   render () {
+    let jsonMlRaw = this.props.jsonMlRaw
+    for (let i = 0; false && i < jsonMlRaw.length; i++) {
+      if (jsonMlRaw[i][0] === 'header') {
+        console.log(jsonMlRaw[1][1] + ' is a header')
+        console.log('isElement = ' + jsonMlRaw.isElement(jsonMlRaw[i]))
+        console.log('attributes = ' + JSON.stringify(JsonML.getAttributes(jsonMlRaw[i])))
+        console.log('children = ' + jsonMlRaw.getChildren(jsonMlRaw[i]))
+      }
+    }
+
+    /**
+     * Note that from my tests, header are only top level elements, markdown
+     * parser simply won't produce one that is inside some other tags.
+     *
+     * Which is a good thing since we have more structure and there is no need
+     * to do recursions in order to extract them here.
+     */
+    var headings = []
+    function extractHeadings (array) {
+      for (let i = 0; i < array.length; i++) {
+        var item = array[i]
+        if (JsonML.isElement(item)) {
+          if (JsonML.getTagName(item) === 'header') {
+            headings.push(
+              [item[0], item[1]].concat(
+                JsonML.getChildren(item)
+              )
+            )
+          }
+          /**
+           * 'this should not be neccessary since heading cannot be nested in any other element'
+           * extractHeadings(item[0])
+           */
+        }
+      }
+    }
+    extractHeadings(jsonMlRaw)
+    function setImgSize (array) {
+      for (let i = 0; i < array.length; i++) {
+        var item = array[i]
+        if (JsonML.isElement(item)) {
+          if (JsonML.getTagName(item) === 'img') {
+            console.log('found an image!!!!')
+            console.log('attribute href = ' + JsonML.getAttribute(item, 'href'))
+            JsonML.setAttribute(item, 'height', '16px')
+          }
+          setImgSize(item)
+        }
+      }
+    }
+    setImgSize(headings)
+
     return (
       <div className={'Toc'}>
-        TOC
-        <div className='SideBar-content'>
-          <div className='SideBar-group' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0'>
-            <h4 className='SideBar-groupTitle' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.0'>Quick Start</h4><a href='docs-overview.html' target='_self' className='SideBar-item SideBar-item--selected' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$OVERVIEW'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$OVERVIEW.0'>Overview</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$OVERVIEW.1'></span></a><a href='docs-tutorial.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$TUTORIAL'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$TUTORIAL.0'>Tutorial</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$TUTORIAL.1'></span></a><a href='docs-testing.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$TESTING'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$TESTING.0'>Testing</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$TESTING.1'></span></a><a href='docs-faq.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$FAQ'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$FAQ.0'>FAQ</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$FAQ.1'></span></a><a href='docs-troubleshooting.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$TROUBLESHOOTING'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$TROUBLESHOOTING.0'>Troubleshooting</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$0.1:$TROUBLESHOOTING.1'></span></a></div>
-          <div className='SideBar-group' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1'>
-            <h4 className='SideBar-groupTitle' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.0'>Top-Level API</h4><a href='docs-drag-source.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DRAG_SOURCE'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DRAG_SOURCE.0'>DragSource</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DRAG_SOURCE.1'></span></a><a href='docs-drop-target.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DROP_TARGET'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DROP_TARGET.0'>DropTarget</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DROP_TARGET.1'></span></a><a href='docs-drag-layer.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DRAG_LAYER'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DRAG_LAYER.0'>DragLayer</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DRAG_LAYER.1'></span></a><a href='docs-drag-drop-context.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DRAG_DROP_CONTEXT'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DRAG_DROP_CONTEXT.0'>DragDropContext</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$1.1:$DRAG_DROP_CONTEXT.1'></span></a></div>
-          <div className='SideBar-group' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$2'>
-            <h4 className='SideBar-groupTitle' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$2.0'>Connecting to DOM</h4><a href='docs-drag-source-connector.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$2.1:$DRAG_SOURCE_CONNECTOR'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$2.1:$DRAG_SOURCE_CONNECTOR.0'>DragSourceConnector</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$2.1:$DRAG_SOURCE_CONNECTOR.1'></span></a><a href='docs-drop-target-connector.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$2.1:$DROP_TARGET_CONNECTOR'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$2.1:$DROP_TARGET_CONNECTOR.0'>DropTargetConnector</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$2.1:$DROP_TARGET_CONNECTOR.1'></span></a></div>
-          <div className='SideBar-group' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3'>
-            <h4 className='SideBar-groupTitle' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.0'>Monitoring State</h4><a href='docs-drag-source-monitor.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.1:$DRAG_SOURCE_MONITOR'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.1:$DRAG_SOURCE_MONITOR.0'>DragSourceMonitor</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.1:$DRAG_SOURCE_MONITOR.1'></span></a><a href='docs-drop-target-monitor.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.1:$DROP_TARGET_MONITOR'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.1:$DROP_TARGET_MONITOR.0'>DropTargetMonitor</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.1:$DROP_TARGET_MONITOR.1'></span></a><a href='docs-drag-layer-monitor.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.1:$DRAG_LAYER_MONITOR'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.1:$DRAG_LAYER_MONITOR.0'>DragLayerMonitor</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$3.1:$DRAG_LAYER_MONITOR.1'></span></a></div>
-          <div className='SideBar-group' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$4'>
-            <h4 className='SideBar-groupTitle' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$4.0'>Backends</h4><a href='docs-html5-backend.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$4.1:$HTML5_BACKEND'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$4.1:$HTML5_BACKEND.0'>HTML5</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$4.1:$HTML5_BACKEND.1'></span></a><a href='docs-test-backend.html' target='_self' className='SideBar-item' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$4.1:$TEST_BACKEND'><span className='SideBar-itemText' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$4.1:$TEST_BACKEND.0'>Test</span><span className='arrowBullet' data-reactid='.1onudyi3mrk.1.0.1.0.0.0.$4.1:$TEST_BACKEND.1'></span></a></div>
-        </div>
+        TOC???
+        {
+          headings.map(
+            (item, index) => {
+              const Tag = 'h' + item[1].level
+              const children = {__html: markdown.toHTML(['markdown'].concat(JsonML.getChildren(item)))}
+              return (
+                <Tag key={index} onClick={this.props.selectionSelect} dangerouslySetInnerHTML={children} />
+              )
+            }
+          )
+        }
       </div>
     )
   }
 }
 
 Toc.propTypes = {
+  jsonMlRaw: PropTypes.array.isRequired,
+  selectionSelect: PropTypes.func.isRequired
 }
 
 export default Toc
