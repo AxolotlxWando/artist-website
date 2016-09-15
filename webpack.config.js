@@ -49,5 +49,11 @@ module.exports = {
     root: path.resolve(__dirname, 'src'),
     modulesDirectories: ['node_modules']
   },
+  devServer: {
+    colors:             true,
+    contentBase:        './dist',
+    inline:             true,
+    progress:           true
+  },
   devtool: '#inline-source-map'
 }

@@ -52,5 +52,9 @@
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1"
+  },
+  "scripts": {
+    "start": "webpack-devserver -d --hot"
   }
 }
+
