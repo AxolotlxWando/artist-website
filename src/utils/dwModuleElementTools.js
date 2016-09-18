@@ -29,13 +29,7 @@ function isBlockElement (node) {
 }
 
 function isLeafElement (node) {
-  var children = JsonML.getChildren
-  for (let i = 0; i < children.length; i++) {
-    if (JsonML.isElement) {
-      return false
-    }
-  }
-  return true
+  return JsonML.getChildren(node).length === 0
 }
 
 export {isTextNode, isInlineElement, isBlockElement, isLeafElement}
