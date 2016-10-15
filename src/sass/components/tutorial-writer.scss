@@ -4,24 +4,67 @@
   flex: 1 1 auto;
 
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   align-items: stretch;
   border: $border-size solid green;
 
-  overflow: auto;
-}
+  overflow: hidden;
 
-.TutorialWriter-Content {
+  .testContainer {
+    position: relative;width:200px;height:100px;top:100px;background:yellow;
+  }
+  .innerdiv1 {
+    z-index: 99999; position:absolute; top:-300px;width: 100px;height:400px;background:red;
+  }
+  .innerdiv2 {
+    z-index: 1; position:absolute; width: 100px;height:20px;background:blue;left:10px;top:10px;
+  }
+
+  // Appbar
+  .SeekerContainer {
+    flex: 0 1 auto;
+    position: relative;
+    // background-color: coral;
+    padding: 0;
+    // margin-top: 24px;
+    // margin-bottom: 48px;
+    // height: 0;
+    margin: 0;
+    // margin-top: '8px';
+    
+    // top: 35px;
+    // left: 200px;
+    // height: 50px;
+    width: 100%;
+    // height: 27px;
+    height: 18px;
+  }
+
+  .Workspace {
     flex: 1 1 auto;
 
-    min-width: 15rem;
-    width: 15rem;
-    overflow: auto;
-
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: stretch;
-    border: $border-size solid darkyellow;
+    border: $border-size solid green;
+
+    overflow: auto;
+    // TOC
+    // Editor
+    .TutorialWriter-Content {
+        flex: 1 1 auto;
+
+        min-width: 15rem;
+        width: 15rem;
+        overflow: auto;
+
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        border: $border-size solid darkyellow;
+    }
+  }
 }

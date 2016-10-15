@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
   "author": "Wesley Wang",
   "license": "MIT",
@@ -51,10 +48,19 @@
     "redux-devtools-log-monitor": "^1.0.11",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+
+    "jasmine": "^2.5.2",
+    "karma": "^1.3.0",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.8.0"
   },
   "scripts": {
-    "start": "webpack-devserver -d --hot"
+    "start": "webpack-dev-server -d --hot",
+    "test": "karma start"
   }
 }
 

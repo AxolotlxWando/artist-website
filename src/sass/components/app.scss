@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Roboto+Slab');
+// font-family: 'Roboto Slab', serif;
+// font-family: 'Roboto', sans-serif;
+// font-family: 'Roboto Condensed', sans-serif;
+
 @import '_dev';
 
 .App {
+  font-family: 'Roboto', sans-serif;
   position: absolute;
   top: 0;
   bottom: 0;

@@ -1,14 +1,29 @@
+// React
 import React, { Component, PropTypes } from 'react'
 
+// Material UI
 import Paper from 'material-ui/Paper'
+import CircularProgress from 'material-ui/CircularProgress'
 
+// JsonMl utils
+import JsonMLUtils from 'jsonml-tools/jsonml-utils'
+import JsonMLHTML from 'jsonml-tools/jsonml-html'
+const JsonML = Object.assign({}, JsonMLUtils, JsonMLHTML)
+
+// Artist Website
+import ContentNode from 'components/ContentNode'
+
+// Styles
 import 'github-markdown-css/github-markdown.css'
 import 'sass/components/main-viewport.scss'
+
+// Assets
 import 'assets/wood_textures/wood1.jpg'
 import 'assets/wood_textures/wood2.jpg'
 import 'assets/wood_textures/wood3.jpg'
 import 'assets/wood_textures/wood4.jpg'
 import 'assets/wood_textures/wood5.jpg'
+import 'assets/wood_textures/wood5-gs.jpg'
 import 'assets/wood_textures/wood6.jpg'
 import 'assets/wood_textures/wood7.jpg'
 import 'assets/wood_textures/wood8.jpg'
@@ -26,27 +41,47 @@ class MainViewport extends Component {
       console.log('e.buttons = ' + e.buttons)
     }
 
-    const paperStyle = {
-      height: this.props.layout.paperHeight + 'rem',
-      width: this.props.layout.paperWidth + 'rem',
-      margin: 5.5 / 3 * 2 * 2.362204724 / 1.414213562 + 'rem' + ' ' + 5.5 / 3 * 2 * 2.362204724 + 'rem',    // 5.5 cm is default columns' width, this is 2/3 of that
-      display: 'inline-block',
+    console.log('this.props.layout = ' + this.props.layout)
+    console.log('this.props.module.jsonMl = ' + this.props.module.jsonMl)
 
-      fontSize: 0.5625 + 'rem'
+    var bodyComponent
+    if (typeof this.props.layout !== 'undefined' && typeof this.props.module.jsonMl !== 'undefined') {
+      const paperStyle = {
+        display: 'inline-block',
+        height: this.props.layout.paperHeight + 'rem',
+        width: this.props.layout.paperWidth + 'rem',
+        margin: 5.5 / 3 * 2 / 4.181818182 + 'rem' + ' ' + 5.5 / 3 * 2 / 4.181818182 + 'rem',
+        // display: 'inline-block',
+
+        fontSize: 0.5625 + 'rem'
+      }
+      var bodyHtml = JsonML.toHTML(this.props.module.jsonMl)
+      bodyComponent = (
+        <Paper style={paperStyle} zDepth={3}>
+          <div className={'markdown-body'}>
+            <div dangerouslySetInnerHTML={{__html: bodyHtml}} />
+            <ContentNode node={this.props.module.jsonMl} />
+          </div>
+        </Paper>
+      )
+      console.log('MainViewport: layout, module.jsonMl')
+    } else {
+      bodyComponent = () => {
+        return (
+          <div>
+            Loading content... <br />
+            <CircularProgress />
+          </div>
+        )
+      }
     }
-
     return (
       <div
-        id='mainViewport'
         className={'MainViewport'}
         onMouseDown={onMouseDownHandler}
         onDrag={onDragHandler}
       >
-        <Paper style={paperStyle} zDepth={3}>
-          <div className={'markdown-body'}>
-            <div dangerouslySetInnerHTML={{__html: this.props.html}} />
-          </div>
-        </Paper>
+        {bodyComponent}
       </div>
     )
   }
@@ -55,6 +90,10 @@ class MainViewport extends Component {
 MainViewport.propTypes = {
   html: PropTypes.string.isRequired,
   jsonMlRaw: PropTypes.array.isRequired,
+
+  module: PropTypes.shape({
+    jsonMl: PropTypes.array.isRequired
+  }).isRequired,
 
   layout: PropTypes.shape({
     paperHeight: PropTypes.number.isRequired,

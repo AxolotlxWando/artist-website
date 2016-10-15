@@ -1,7 +1,11 @@
 import { combineReducers } from 'redux'
 
 import { markdown } from 'markdown'
-import DWModule from 'utils/dwModule'
+import DWModule from 'dw-module/'
+
+import JsonMLUtils from 'jsonml-tools/jsonml-utils'
+import JsonMLHTML from 'jsonml-tools/jsonml-html'
+const JsonML = Object.assign({}, JsonMLUtils, JsonMLHTML)
 
 import {
   FILE_OPEN_REQUEST,
@@ -31,10 +35,17 @@ function tutorialWriterContent (state = {text: '', jsonMlRaw: [], html: ''}, act
   }
 }
 
-function tutorialWriterContentModule (state = [], action) {
+function tutorialWriterContentModule (state = {jsonMl: []}, action) {
   switch (action.type) {
     case FILE_OPEN_SUCCESS:
-      return DWModule.compile(action.text, action.layout)
+      var module = new DWModule(action.text, action.layout)
+      const content = ['markdown', {withAttr: true}, ['header', {level: 1}, 'testing 123'], ['para', 'blah blah!'], ['inlinecode', '2222222222 222!']]
+      module.jsonMl = content
+      module.compile()
+      console.log('abc')
+      console.log(module.jsonMl)
+      console.log(JsonML.toHTML(module.jsonMl))
+      return module
     default:
       return state
   }
@@ -57,7 +68,7 @@ function tutorialWriterViewMode (state = {page: 0}, action) {
   }
 }
 
-function tutorialWriter (state = {rawContent: {text: '', jsonMlRaw: [], html: ''}, module: [], layout: {paperHeight: 0, paperWidth: 0, pages: []}}, action) {
+function tutorialWriter (state = {rawContent: {text: '', jsonMlRaw: [], html: ''}, module: {jsonMl: []}, layout: {paperHeight: 0, paperWidth: 0, pages: []}}, action) {
   switch (action.type) {
     case FILE_OPEN_REQUEST:
       console.log('000')
@@ -74,7 +85,7 @@ function tutorialWriter (state = {rawContent: {text: '', jsonMlRaw: [], html: ''
         {
           file: (state = {}) => state,
           rawContent: (state = {}) => state,
-          module: (state = []) => state,
+          module: (state = {}) => state,
           layout: (state = {}) => state,
           workflowMode: tutorialWriterWorkflowMode,
           viewMode: tutorialWriterViewMode

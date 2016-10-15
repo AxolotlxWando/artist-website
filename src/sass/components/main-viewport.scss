@@ -1,17 +1,16 @@
 @import '_dev';
-// @import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700);
-@import url(https://fonts.googleapis.com/css?family=Roboto);
 
 .MainViewport {
-    display: block;
-    min-width: 15rem;
+    flex: 1 1 auto;
+    position: static;
+    // display: block;
     overflow: scroll;
-    border: 0 solid deeppink;
+    height: 0px;
+    // border: 2px solid deeppink;
     // border: $border-size solid blue;
 
-    background:#fff url('/wood5.jpg');
+    background:#fff url('/wood5-gs.jpg');
     box-shadow: inset 1px 3px 30px rgba(30, 15, 10, 1);
-    overflow: auto;
 }
 
 .markdown-body {
