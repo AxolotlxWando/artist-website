@@ -1,11 +1,54 @@
 @import '_dev';
 
-.Editor {
-    flex: 0 0 auto;
+.EditorContainer {
+    // flex: 0 1 auto;
+    position: absolute;
+    right: 15px + 12px;
+    bottom: 15px;
 
     width: 15rem;
-    min-width: 15rem;
-    overflow: scroll;
+    height: 23rem;
+    // overflow: scroll;
+}
 
-    border: $border-size solid brown;
+.EditorContainer.isCollapsed {
+    height: 25px;
+}
+
+.EditorHeader {
+  width: 100%;
+  height: 25px;
+  background-image: url('/editor-header.png');
+  // background-color: yellow;
+}
+
+.Editor {
+    // flex: 0 1 auto;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 240px - 2px;
+    height: 369px - 25px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+    background-color: white;
+}
+
+.EditorContent {
+   flex: 1 1 auto;
+    padding: 8px;
+}
+
+.EditorButtons {
+    flex: 0 1 auto;
+    height: 20px;
+    color: #222;
+}
+
+.Editor.isCollapsed {
+    height: 0px;
 }

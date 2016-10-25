@@ -3,7 +3,6 @@ injectTapEventPlugin()
 
 // React
 import React, { Component } from 'react'
-import App from 'containers/App'
 import { render } from 'react-dom'
 
 // Redux
@@ -17,15 +16,17 @@ import backpack from 'reducers/backpack'
 import tutorialWriter from 'reducers/tutorialWriter'
 
 // Redux Router
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute, browserHistory, hashHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 // Material UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 // App
+import App from 'containers/App'
 import TutorialWriter from 'containers/TutorialWriter'
 import TutorialViewer from 'containers/TutorialViewer'
+import Home from 'containers/Home'
 
 import 'sass/base/_all.scss'
 
@@ -48,7 +49,7 @@ const store = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore)(reducer)
 
-const history = syncHistoryWithStore(browserHistory, store)
+const history = syncHistoryWithStore(hashHistory, store)
 
 render(
   <Provider store={store}>
@@ -58,6 +59,7 @@ render(
           <IndexRoute component={TutorialWriter} />
           <Route path='faq' component={Faq} />
           <Route path='viewer' component={TutorialViewer} />
+          <Route path='browse' component={Home} />
         </Route>
       </Router>
     </MuiThemeProvider>

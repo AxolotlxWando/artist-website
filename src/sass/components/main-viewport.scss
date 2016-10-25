@@ -2,12 +2,14 @@
 
 .MainViewport {
     flex: 1 1 auto;
+    min-width: 12rem;
+
     position: static;
     // display: block;
     overflow: scroll;
-    height: 0px;
+    // height: 0px;
     // border: 2px solid deeppink;
-    // border: $border-size solid blue;
+    border: $border-size solid blue;
 
     background:#fff url('/wood5-gs.jpg');
     box-shadow: inset 1px 3px 30px rgba(30, 15, 10, 1);
@@ -23,4 +25,21 @@
 
     font-size: 0.5625rem;  // 9px font
     font-family: 'Roboto', sans-serif;
+
+    // background: url('/tmp.jpg');
+    // background-size: 100% 100%;
+    // height: 100%;
+}
+
+.Pages {
+    display: inline-block;
+    border: $border-size solid red;
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.Column {
+    white-space: normal;
+    padding-right: 1em;
+    border-right: 2px dashed #E0E0E0;
 }

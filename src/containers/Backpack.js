@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 import classNames from 'classnames'
 import 'sass/components/backpack.scss'
 
+import 'assets/backpack-background.png'
+import 'assets/backpack-content.png'
+
 function mapStateToProps (state) {
   return {
     collapsed: state.backpack.collapsed
@@ -25,15 +28,8 @@ class Backpack extends Component {
       [this.props.collapsed ? 'collapsed' : 'expanded']: true
     })
     return (
-      <div>
-        <div className={classes}>
-          <p>
-            Content<br />
-            Content<br />
-            Content<br />
-            Content<br />
-          </p>
-        </div>
+      <div className={classes}>
+        <div className={'BackpackContent'} />
       </div>
     )
   }

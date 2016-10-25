@@ -1,22 +1,36 @@
 @import '_dev';
 
 .Backpack {
-  position: fixed;
-  top: -10rem;
-  bottom: 0;
+  // flex: 1 1 auto;
+  // position: fixed;
+  // top: -200px;
+  // bottom: 0;// 
   width: 100%;
   height: 10rem;
   overflow-x: auto;
-  font-size: .875rem; /* 15px */
-  background-color: #00BCD4;
+  // background-color: #00BCD4;
+  // box-shadow: inset 0 0 15px #000000;
+  box-shadow:
+      inset +45px +53px 15px -50px #111111,
+      inset -48px -48px 15px -50px #111111;
+  background-image: url('/backpack-background.png');
+  background-repeat: repeat;
 }
-/*
-.Backpack.Backpack-is-expanded {
+/*.Backpack.expanded {
   // transition: opacity .2s linear, transform .5s ease-out;
   transition: transform .1s  cubic-bezier(.91,.8,.54,1);
-  transform: translate3d(0, 10rem, 0);
+  transform: translate3d(0, 200px, 0);
 }
 
-.Backpack.Backpack-is-collapsed {
+.Backpack.collapsed {
   transition: transform .2s  linear;
 }*/
+
+.BackpackContent {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 20px 20px;
+  background-image: url('/backpack-content.png');
+  background-repeat: no-repeat;
+}

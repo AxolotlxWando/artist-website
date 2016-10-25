@@ -8,10 +8,12 @@ import { prepareContentForViews } from 'dw-module/prepare-content-for-views'
 class DWModule {
   constructor (textRaw, layout) {
     this.jsonMl = markdown.parse(textRaw, 'Maruku')
+    this.layout = layout
     console.log(this.jsonMl)
+    console.log('abc layout' + layout)
   }
   compile () {
-    var compiled = prepareContentForViews(this.jsonMl)
+    var compiled = prepareContentForViews(this.jsonMl, this.layout)
     console.log(this.jsonMl)
     console.log(compiled)
   }

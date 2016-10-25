@@ -2,13 +2,111 @@
 
 .Timeline {
   flex: 0 1 auto;
-  min-height: 12rem;
+  height: 95px;
+  min-height: 95px;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   align-items: stretch;
   border: $border-size solid lightgreen;
 
-  overflow: scroll;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
+
+.TimelineBody {
+  display: inline-block;
+  height: 79px;
+  flex: 1 1 auto;
+  white-space: nowrap;
+  background-image: url('/timeline-background.png');
+  background-repeat: repeat;
+}
+
+.TimelineElement {
+  position: relative;
+  display: inline-block;
+  margin: 5px 3px;
+  height: 69px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  // background-color: rgba(255,0,0,0.2);
+  background-color: rgba(255,255,255,0.98);
+  // background-color: #E0E0E0;
+}
+
+.TimelineElement.isHighlighted //,
+// .TimelineBody > div:hover
+{
+  background-image: linear-gradient(pink, lightgrey);
+}
+
+.TimelineElementTitle {
+  font-size: 9px;
+  width: 100%;
+  padding: 3px 8px;
+}
+
+.TimelineElementWordBox {
+  display: block;
+  position: absolute;
+  right: 10px;
+  top: 20px;
+
+  height: 8px;
+  width: 8px;
+
+  outline: 1px solid #000;
+  background-color: orange;
+  border: 1px solid #000;
+  z-index: 9;
+}
+
+.TimelineElementWordBoxFill {
+  display: block;
+  position: absolute;
+  right: 12px;
+  top: 22px;
+
+  height: 4px;
+  width: 4px;
+
+  background-color: #555555;
+  border-radius: 50%;
+  z-index: 10;
+  border: 1px solid #000;
+}
+
+.TimelineElementCharacterBox {
+  display: block;
+  position: absolute;
+  right: 10px;
+  top: 47px;
+
+  height: 8px;
+  width: 8px;
+
+  outline: 1px solid #000;
+  background-color: orange;
+  border: 1px solid #000;
+  z-index: 9;
+}
+
+.TimelineElementCharacterBoxFill {
+  display: block;
+  position: absolute;
+  right: 12px;
+  top: 49px;
+
+  height: 4px;
+  width: 4px;
+
+  background-color: #555555;
+  border-radius: 50%;
+  z-index: 10;
+  border: 1px solid #000;
+}
+
+
+

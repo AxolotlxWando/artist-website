@@ -4,6 +4,8 @@ const JsonML = Object.assign({}, JsonMLUtils, JsonMLHTML)
 
 import {isText, isInlineElement, isBlockElement, isLeafElement} from 'utils/element-types.js'
 
+import 'github-markdown-css/github-markdown.css'
+
 // import { markdown } from 'markdown'
 
 /**
@@ -16,12 +18,14 @@ import {isText, isInlineElement, isBlockElement, isLeafElement} from 'utils/elem
  * also for iteration's purpose only too
  */
 class ElIterator {
-  constructor (jsonMl, layout) {
+  constructor (jsonMl, _layout) {
     this.content = jsonMl
+    console.log('_layyyyyout!!!!!' + _layout)
+    this.layout = _layout
     this.currPosition = 0
     this.iterations = []
     // Being a explicit boundary, giveing some ease of mind
-    this.iterations.push({node: null, children: [this.content], counter: 0})
+    this.iterations.push({node: undefined, children: [this.content], counter: 0})
 
     this.textNodeFlag = false
     this.breakFlag = false
@@ -149,25 +153,109 @@ class ElIterator {
     this.incrementChild()
     this._newIteration(currElement)
   }
+  closeNode () {
+    console.log('layout = ' + this.layout)
+    console.log('layout exists? ' + (typeof this.layout !== 'undefined'))
+    if (typeof this.currIteration().node !== 'undefined') {
+      console.log('currIteration() = ' + (!isText(this.currIteration().node)) ? (this.currIteration().node[0]) : this.currIteration().node)
+    }
+    console.log('++++++++++ reduceDepth calculate height +++++++++++')
+    var element = this.currIteration().node
+    if (this.textNodeFlag && this.hierarchy.length === 0) {
+      console.log('this.currIteration().node = ' + this.currIteration().node[0])
+      if (typeof this.layout !== 'undefined') {
+        var source = '' + JsonML.toHTMLText(this.textNodeLeafIteration.node)
+        if (typeof source !== undefined) {
+          source = source.replace(/<textnode [^>]*>(.*?)<\/textnode>/, function (m, p1) { return p1 })
+        }
+        console.log('source    = ' + source)
+        // console.log('iteration = ' + JsonML.toHTMLText(this.iterations[0].children[0]))
+        var tmpElement = document.createElement('div')
+        tmpElement.setAttribute('style',
+                                'visibility:visible;margin:0px;padding:0px;' +
+                                'front-size: ' + this.layout.pages[0].columns[0].fontSize + ';' +
+                                'line-spacing: 1.5;' +
+                                // 'height: ' + this.layout.pages[0].columns[0].height + 'em;' +
+                                'width: ' + this.layout.pages[0].columns[0].width + 'em;'
+                               )
+        tmpElement.className = 'markdown-body'
+        tmpElement.innerHTML = source
+        console.log(tmpElement)
+        document.body.appendChild(tmpElement)
+        console.log('height of textnode = ' + tmpElement.clientHeight)
+        var height = tmpElement.clientHeight
+        JsonML.addAttributes(this.textNodeLeafIteration.node, {elHeight: height / 9})
+        this.currPosition += (height / 9)
+        console.log('')
+        console.log('')
+        tmpElement.remove()
+      } else {
+        console.log('layout not defined, skip calculating elHeight')
+        console.log('')
+        console.log('')
+      }
+    } else if (isBlockElement(element)) {
+      var start = JsonML.getAttribute(element, 'elPosition')
+      JsonML.addAttributes(this.currIteration().node, {elHeight: this.currPosition - start})
+    } else if (
+      typeof this.currIteration().node !== 'undefined' &&
+      JsonML.getTagName(this.currIteration().node) === 'markdown'
+    ) {
+      JsonML.addAttributes(this.currIteration().node, {elHeight: this.currPosition})
+    }
+  }
   reduceDepth () {
-    console.log('reduceDepth:')
+    console.log('reduceDepth():')
     console.log('this.textNodeFlag = ' + this.textNodeFlag)
     console.log('this.hierarchy.length = ' + this.hierarchy.length)
+    console.log('this.currIteration().node ' + (
+      typeof this.currIteration().node !== 'undefined' ? this.currIteration().node[0] : this.currIteration().node
+    ))
+    console.log('')
+
+    this.closeNode()
+
     if (this.textNodeFlag) {
+      // var tmpNode = ['div'].splice(1, 0, this.textNodeLeafIteration.children)
+      // console.log('++++++++++ reduceDepth calculate height +++++++++++')
+      // console.log('textNodeLeafIteration = {')
+      // console.log('  node:')
+      // console.log(JsonML.toHTML(this.textNodeLeafIteration.node))
+      // console.log('')
+      // console.log('  children:')
+      // console.log(JsonML.toHTML(this.textNodeLeafIteration.children))
+      // console.log('}')
+      // console.log('')
+      // console.log(JsonML.toHTML(tmpNode))
+      // console.log('')
+      // console.log('')
       if (this.hierarchy.length > 1) {
         this.iterations.pop()
         this.hierarchy.pop()
+
+        var leafElement = this.hierarchy[this.hierarchy.length - 1].element
+        var leafElementChildren = this._getChildren(leafElement)
+        var leafElementCounter = leafElementChildren.length - 1 < 0 ? 0 : leafElementChildren.length - 1
+        this.textNodeLeafIteration = {
+          node: leafElement,
+          counter: leafElementCounter
+        }
+        if (leafElementChildren.length) {
+          this.textNodeLeafIteration.children = leafElementChildren
+        }
       } else if (this.hierarchy.length === 1) {
         // console.log('reduceDepth():')
         // console.log('currElement() = ' + this.currElement())
         // console.log('this.textNode = ' + this.textNode)
         // console.log('')
         // console.log('')
-        console.log('reduceDepth():')
-        console.log('currIteration() = ' + this.currIteration().node[0])
-        console.log('removing ' + this.currIteration().children[this.currCounterReadOnly() - 1])
-        console.log('')
-        console.log('')
+
+        // console.log('reduceDepth():')
+        // console.log('currIteration() = ' + this.currIteration().node[0])
+        // console.log('removing ' + this.currIteration().children[this.currCounterReadOnly() - 1])
+        // console.log('')
+        // console.log('')
+
         this.textNodeFlag = false
         this.textNodeLeafIteration = undefined
 
@@ -187,10 +275,11 @@ class ElIterator {
     var newTextNode = []
     newTextNode.push('textNode')
     newTextNode.push({
-      elPosition: this.currPosition++,
-      elPage: 0,
-      elColumn: 0,
+      elPosition: this.currPosition,
+      // elPage: 0,
+      // elColumn: 0,
       elHeight: 0
+      // elHeightByLines
     })
     /* JsonML.addAttributes(newTextNode, {
        elPosition: 0,
@@ -201,17 +290,17 @@ class ElIterator {
 
     // indice is 0-origin (-1), we cound backwards from the last one
     // therefore do not need to consider invalid first node being {null, jsonMl}
-    console.log(JsonML.toHTML(this.content))
+    // console.log(JsonML.toHTML(this.content))
     var rootLevel = this.iterations.length - this.hierarchy.length - 1
     var rootIteration = this.iterations[rootLevel]
     var rootIterationCounter = rootIteration.counter + (this.hierarchy.length <= 0 ? 0 : -1)
 
-    if (this.hierarchy && this.hierarchy[0] && this.hierarchy[0].container) {
-      console.log('   hierarchy = ')
-      for (let i = 0; i < this.hierarchy[0].container.length; i++) {
-        console.log(this.hierarchy[0].container[i])
-      }
-    }
+    // if (this.hierarchy && this.hierarchy[0] && this.hierarchy[0].container) {
+    //   console.log('   hierarchy = ')
+    //   for (let i = 0; i < this.hierarchy[0].container.length; i++) {
+    //     console.log(this.hierarchy[0].container[i])
+    //   }
+    // }
 
     // console.log('')
     // console.log('   this.iterations.length = ' + this.iterations.length)
@@ -247,12 +336,12 @@ class ElIterator {
       }
     }
 
-    if (this.hierarchy && this.hierarchy[0] && this.hierarchy[0].container) {
-      console.log('   hierarchy = ')
-      for (let i = 0; i < this.hierarchy[0].container.length; i++) {
-        console.log(this.hierarchy[0].container[i])
-      }
-    }
+    // if (this.hierarchy && this.hierarchy[0] && this.hierarchy[0].container) {
+    //   console.log('   hierarchy = ')
+    //   for (let i = 0; i < this.hierarchy[0].container.length; i++) {
+    //     console.log(this.hierarchy[0].container[i])
+    //   }
+    // }
 
     var branch
     /**
@@ -272,17 +361,23 @@ class ElIterator {
       // console.log('')
       this._addChild(branchIteration, 0, this.hierarchy[0].element)
 
-      var leafElementContainer = newTextNode
       var leafElement = this.hierarchy[this.hierarchy.length - 1].element
       var leafElementChildren = this._getChildren(leafElement)
       var leafElementCounter = leafElementChildren.length - 1 < 0 ? 0 : leafElementChildren.length - 1
       this.textNodeLeafIteration = {
-        node: leafElementContainer,
+        node: leafElement,
         counter: leafElementCounter
       }
       if (leafElementChildren.length) {
         this.textNodeLeafIteration.children = leafElementChildren
       }
+      console.log('_creatTextNode(): setting leafNodeIteration:')
+      console.log(' INTERMEDIATE NODES, ' + this.currElement())
+      console.log(' leafElement          = ' + JsonML.toHTMLText(leafElement))
+      console.log(' leafElementCounter   = ' + leafElementCounter)
+      console.log(' leafElement = ' + JsonML.toHTMLText(leafElement))
+      console.log('')
+      console.log('')
       // console.log(JsonML.toHTML(['inlinenode']))
       // console.log(JsonML.toHTML(leafElementContainer))
       // console.log('_createTextNode():')
@@ -294,7 +389,24 @@ class ElIterator {
       // console.log('')
     } else {
       branch = newTextNode
-      this.textNodeLeafIteration = undefined
+
+      var leafElement2 = newTextNode
+      var leafElementChildren2 = this._getChildren(leafElement2)
+      var leafElementCounter2 = leafElementChildren2.length - 1 < 0 ? 0 : leafElementChildren2.length - 1
+      this.textNodeLeafIteration = {
+        node: leafElement2,
+        counter: leafElementCounter2
+      }
+      if (leafElementChildren2.length) {
+        this.textNodeLeafIteration.children = leafElementChildren2
+      }
+      console.log('_creatTextNode(): setting leafNodeIteration:')
+      console.log(' NO HIERARCHY, ' + this.currElement())
+      console.log(' leafElement          = ' + JsonML.toHTMLText(leafElement2))
+      console.log(' leafElementCounter   = ' + leafElementCounter2)
+      console.log(' leafElement = ' + JsonML.toHTMLText(leafElement2))
+      console.log('')
+      console.log('')
     }
 
     // console.log('_createTextNode(): adding ' + branch[0] + ' to ' + rootIteration.node[0])
@@ -311,7 +423,7 @@ class ElIterator {
     // console.log(JsonML.toHTML(this.content))
     // console.log('')
     // Always have a textNode when a text entry is encountered
-    console.log('textNodeFlag = ' + this.textNodeFlag)
+    // console.log('textNodeFlag = ' + this.textNodeFlag)
     if (!this.textNodeFlag) {
       // this.closeNode()
       this._createTextNode()
@@ -319,23 +431,25 @@ class ElIterator {
     // Textnodes exist in two forms, one with inline hierarchy, one without
     // when nested inside intermediate inline elements, this.textNodeLeafIteration
     // is declared to manage manipulation to the textnode
-    console.log('this.textNodeLeafIteration || this.hierarchy.length > 0) = ' + (this.textNodeLeafIteration || this.hierarchy.length > 0))
-    console.log('')
-    if (this.textNodeLeafIteration || this.hierarchy.length > 0) {
-      if (!this.textNodeLeafIteration || !(this.hierarchy.length > 0)) {
+    // console.log('this.textNodeLeafIteration || this.hierarchy.length > 0) = ' + (this.textNodeLeafIteration || this.hierarchy.length > 0))
+    // console.log('')
+    if (typeof this.textNodeLeafIteration !== 'undefined' || this.hierarchy.length > 0) {
+      if (typeof this.textNodeLeafIteration === 'undefined' || !(this.hierarchy.length > 0)) {
         console.log('addText(): error, either this.texnode is uninitialised and/ or hierarchy is not setup correctly.')
+        console.log('this.texNodeLeafIteration = ' + JsonML.toHTMLText(this.textNodeLeafIteration.node))
+        console.log('this.hierarchy.length = ' + this.hierarchy.length)
         console.log('')
       }
       var leafIterationCounter = 0
-      if (this.textNodeLeafIteration.children) {
-        var length = this.textNodeLeafIteration.children !== undefined ? 0 : this.textNodeLeafIteration.children.length
+      if (typeof this.textNodeLeafIteration.children !== 'undefined') {
+        var length = this.textNodeLeafIteration.children !== 'undefined' ? 0 : this.textNodeLeafIteration.children.length
         leafIterationCounter = length - 1 < 0 ? 0 : length - 1
       }
-      // console.log('addText(): adding ' + this.currElement() + '  to ' + this.textNodeLeafIteration.node[0])
-      // console.log('')
+      console.log('addText(): adding ' + this.currElement() + '  to ' + this.textNodeLeafIteration.node[0])
+      console.log('')
       this._addChild(this.textNodeLeafIteration, leafIterationCounter, this.currElement())
     } else {
-      console.log(JsonML.toHTML(this.content))
+      // console.log(JsonML.toHTML(this.content))
       var textNode = this.currIteration().children[this.currIteration().counter - 1]
       // console.log('textNode = ' + textNode)
       // console.log(JsonML.toHTML(this.content))
@@ -360,10 +474,47 @@ class ElIterator {
   }
   addInlineElement () {
     this.hierarchy.push({container: this.currIteration().node, element: this.currElement()})
+    if (typeof this.textNodeFlag) {
+      var leafElement = this.hierarchy[this.hierarchy.length - 1].element
+      var leafElementChildren = this._getChildren(leafElement)
+      var leafElementCounter = leafElementChildren.length - 1 < 0 ? 0 : leafElementChildren.length - 1
+      this.textNodeLeafIteration = {
+        node: leafElement,
+        counter: leafElementCounter
+      }
+      if (leafElementChildren.length) {
+        this.textNodeLeafIteration.children = leafElementChildren
+      }
+    }
     this.incrementChildAndDepth()
   }
   processBlockElement () {
-    JsonML.addAttributes(this.currElement(), {elPosition: this.currPosition++})
+    JsonML.addAttributes(this.currElement(), {elPosition: this.currPosition})
+
+    if (typeof this.layout !== 'undefined') {
+      var tmpNode = [JsonML.getTagName(this.currElement())]
+      if (JsonML.hasAttributes(this.currElement())) {
+        JsonML.addAttributes(tmpNode, JsonML.getAttributes(this.currElement()))
+      }
+      var source = JsonML.toHTMLText(tmpNode)
+      var tmpElement = document.createElement('div')
+      tmpElement.setAttribute('style',
+                              'visibility:visible;margin:0px;padding:0px;' +
+                              'front-size: ' + this.layout.pages[0].columns[0].fontSize + ';' +
+                              'line-spacing: 1.5;' +
+                              // 'height: ' + this.layout.pages[0].columns[0].height + 'em;' +
+                              'width: ' + this.layout.pages[0].columns[0].width + 'em;'
+                             )
+      tmpElement.className = 'markdown-body'
+      tmpElement.innerHTML = source
+      console.log(tmpElement)
+      document.body.appendChild(tmpElement)
+      console.log('height of textnode = ' + tmpElement.clientHeight)
+      var height = tmpElement.clientHeight
+      this.currPosition += (height / 9)
+      tmpElement.remove()
+    }
+
     if (isLeafElement(this.currElement())) {
       this.incrementChild()
     } else {
@@ -372,34 +523,37 @@ class ElIterator {
   }
 }
 
-function prepareContentForViews (jsonMl) {
-  var iterator = new ElIterator(jsonMl)
+function prepareContentForViews (jsonMl, layout) {
+  var iterator = new ElIterator(jsonMl, layout)
   iterator.incrementChildAndDepth()
 
-  console.log(iterator.currIteration())
-  console.log(iterator.currElement())
+  // console.log(iterator.currIteration())
+  // console.log(iterator.currElement())
   var safeGuard = 0
   while (iterator.currIteration() && safeGuard < 999) {
     while (iterator.currElement() && safeGuard < 999) {
-      console.log(iterator.currElement())
-      console.log(isText(iterator.currElement()))
-      console.log(isInlineElement(iterator.currElement()))
-      console.log(isBlockElement(iterator.currElement()))
+      // console.log(iterator.currElement())
+      // console.log(isText(iterator.currElement()))
+      // console.log(isInlineElement(iterator.currElement()))
+      // console.log(isBlockElement(iterator.currElement()))
       // Check text node
       if (isText(iterator.currElement())) {
         // iterator._createTextNode()
-        console.log('adding text')
-        console.log(iterator.currElement())
+        console.log('prepareContentForViews(): adding text')
+        console.log(iterator.currElement()[0])
+        console.log(' ')
         iterator.addText()
       } else if (isInlineElement(iterator.currElement())) {
         // Protential children to cause increment of depth
-        console.log('adding inlineElement')
-        console.log(iterator.currElement())
+        console.log('prepareContentForViews(): adding inlineElement')
+        console.log(iterator.currElement()[0])
+        console.log(' ')
         iterator.addInlineElement()
       } else if (isBlockElement(iterator.currElement())) {
         // Protential children to cause increment of depth
-        console.log('processing block')
-        console.log(iterator.currElement())
+        console.log('prepareContentForViews(): processing block')
+        console.log(iterator.currElement()[0])
+        console.log(' ')
         iterator.processBlockElement()
       } else {
         console.log('prepareContentForViews(): Error, unknown element: ' + iterator.currElement())
@@ -410,7 +564,8 @@ function prepareContentForViews (jsonMl) {
     iterator.reduceDepth()
     safeGuard++
   }
-  console.log('iterator.content = ' + iterator.content)
+
+  console.log('prepareContentForViews(): content = ' + JsonML.toHTMLText(iterator.content))
   return iterator.content
 }
 

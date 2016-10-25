@@ -1,6 +1,7 @@
 import fetch from 'utils/fetch'
 import 'REDUX_README.md'
-import 'REDUX_README.layout'
+import '2016-06-06_zbrush-introduction_notes.md'
+import 'layout.json'
 
 export const FILE_NEW_INVOCATION = 'FILE_NEW_INVOCATION'
 export const FILE_NEW = 'FILE_NEW'
@@ -70,11 +71,20 @@ function fileOpenSuccess (text, layout) {
 export function fileOpenAsync (file) {
   return (dispatch) => {
     dispatch(fileOpenRequest(file))
-    var req1 = fetch('./REDUX_README.md').then(
+    var req1 = fetch('./2016-06-06_zbrush-introduction_notes.md').then(
       (response) => { return response.text() }
     )
-    var req2 = fetch('./REDUX_README.layout').then(
-      (response) => { return response.json() }
+    var req2 = fetch('./layout.json', {
+      headers: new Headers({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json charset=UTF-8'
+      }),
+      mode: 'cors',
+      cache: 'default'
+    }).then(
+      (response) => {
+        return response.json()
+      }
     )
     Promise.all([req1, req2]).then(
       (results) => { dispatch(fileOpenSuccess(results[0], results[1])) },

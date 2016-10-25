@@ -1,19 +1,40 @@
 import React, { Component, PropTypes } from 'react'
 
 import { markdown } from 'markdown'
-import JsonML from 'jsonml-tools/jsonml-utils'
+// JsonMl utils
+import JsonMLUtils from 'jsonml-tools/jsonml-utils'
+import JsonMLHTML from 'jsonml-tools/jsonml-html'
+const JsonML = Object.assign({}, JsonMLUtils, JsonMLHTML)
 
+// Styles and Assets
 import 'sass/components/toc.scss'
+import 'assets/toc-background.png'
+import 'assets/toc-item.png'
+import 'assets/toc-item2.png'
+import 'assets/toc-item3.png'
 
 class Toc extends Component {
   constructor (props) {
     super(props)
     this._selectionSelect = this._selectionSelect.bind(this)
+    this.onClickHeader = this.onClickHeader.bind(this)
+  }
+  onClickHeader (position) {
+    console.log('Toc:onClickHeader(): elPosition = ' + position)
+    if (typeof position !== 'undefined') {
+      this.props.activePointerSeek(position)
+    }
+    this.props.loadContent()
   }
   _selectionSelect () {
     this.props.selectionSelect()
   }
   render () {
+    if (
+      typeof this.props.jsonMl === 'undefined' || this.props.jsonMl.length <= 0
+    ) {
+      return null
+    }
     let jsonMlRaw = this.props.jsonMlRaw
     for (let i = 0; false && i < jsonMlRaw.length; i++) {
       if (jsonMlRaw[i][0] === 'header') {
@@ -51,6 +72,9 @@ class Toc extends Component {
       }
     }
     extractHeadings(jsonMlRaw)
+    if (headings.length <= 0) {
+      return null
+    }
     function setImgSize (array) {
       for (let i = 0; i < array.length; i++) {
         var item = array[i]
@@ -68,26 +92,36 @@ class Toc extends Component {
 
     return (
       <div className={'Toc'}>
-        TOC???
-        {
-          headings.map(
-            (item, index) => {
-              const Tag = 'h' + item[1].level
-              const children = {__html: markdown.toHTML(['markdown'].concat(JsonML.getChildren(item)))}
-              return (
-                <Tag key={index} onClick={this.props.selectionSelect} dangerouslySetInnerHTML={children} />
-              )
-            }
-          )
-        }
+        <div className={'TocContainer'}>
+          {
+            headings.map(
+              (item, index) => {
+                const Tag = 'h' + JsonML.getAttributes(item).level
+                const children = {__html: markdown.toHTML(['markdown'].concat(JsonML.getChildren(item)))}
+                return (
+                  <Tag key={index} className={Tag === 'h1' ? 'TocItemH1' : 'TocItem'} onClick={() => { this.onClickHeader(JsonML.getAttribute(item, 'elPosition')) }} dangerouslySetInnerHTML={children} />
+                )
+              }
+            )
+          }
+        </div>
       </div>
     )
   }
 }
 
 Toc.propTypes = {
-  jsonMlRaw: PropTypes.array.isRequired,
-  selectionSelect: PropTypes.func.isRequired
+  // jsonMl: PropTypes.array.isRequired,
+
+  viewPosition: PropTypes.number.isRequired,
+  highlightPosition: PropTypes.number.isRequired,
+  activePosition: PropTypes.number.isRequired,
+
+  viewPointerSeek: PropTypes.func.isRequired,
+  highlightPointerSeek: PropTypes.func.isRequired,
+  activePointerSeek: PropTypes.func.isRequired,
+
+  loadContent: PropTypes.func.isRequired
 }
 
 export default Toc

@@ -35,16 +35,19 @@ class App extends Component {
     this.props.openFile()
   }
   render () {
-    const appContentClasses = classNames(
-      'App-Content',
-      this.props.backpack_collapsed ? 'App-Content-backpack-is-collapsed' : 'App-Content-backpack-is-expanded'
-    )
     return (
       <div className={'App'}>
         <BackpackButton toggleBackpack={this.props.backpack_toggleBackpack} />
-        <div className={appContentClasses}>
+        <div
+          className={classNames(
+            'AppContainer',
+            this.props.backpack_collapsed ? 'isCollapsed' : 'isExpanded'
+          )}
+        >
           <Backpack />
-          {this.props.children}
+          <div className={'App-Content'}>
+            {this.props.children}
+          </div>
         </div>
       </div>
     )
